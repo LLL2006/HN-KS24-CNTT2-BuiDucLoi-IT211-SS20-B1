@@ -1,0 +1,41 @@
+@baseUrl = http://localhost:8080
+@accessToken = paste_access_token_here
+@refreshToken = paste_refresh_token_here
+
+### 1. Dang nhap bang admin / 123456
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+### 2. Goi API nghiep vu bang access token
+GET {{baseUrl}}/api/employees/me
+Authorization: Bearer {{accessToken}}
+
+### 3. Co tinh dung access token het han
+### Doi qua 15 phut theo cau hinh jwt-expired=900000, sau do gui request nay se nhan 401.
+GET {{baseUrl}}/api/employees/me
+Authorization: Bearer {{accessToken}}
+
+### 4. Dung refresh token de lay access token moi
+POST {{baseUrl}}/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### 5. Goi API nghiep vu bang access token moi
+GET {{baseUrl}}/api/employees
+Authorization: Bearer {{accessToken}}
+
+### 6. Dang xuat, token se bi revoked va expired trong DB
+POST {{baseUrl}}/api/auth/logout
+Authorization: Bearer {{accessToken}}
+
+### 7. Goi lai bang token cu sau logout se nhan 401
+GET {{baseUrl}}/api/employees/me
+Authorization: Bearer {{accessToken}}
