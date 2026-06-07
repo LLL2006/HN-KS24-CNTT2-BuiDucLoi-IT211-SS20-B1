@@ -1,0 +1,44 @@
+### 1. Login lấy Access Token và Refresh Token
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "123456"
+}
+
+### Sau khi login, copy accessToken và refreshToken từ response
+
+
+### 2. Gọi API nghiệp vụ thành công bằng Access Token
+GET http://localhost:8080/api/employees/me
+Authorization: Bearer PASTE_ACCESS_TOKEN_HERE
+
+
+### 3. Cố tình dùng token sai định dạng
+GET http://localhost:8080/api/employees/me
+Authorization: Bearer abcxyz.fake.token
+
+
+### 4. Dùng Refresh Token lấy Access Token mới
+POST http://localhost:8080/api/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "PASTE_REFRESH_TOKEN_HERE"
+}
+
+
+### 5. Gọi API nghiệp vụ bằng Access Token mới
+GET http://localhost:8080/api/employees/me
+Authorization: Bearer PASTE_NEW_ACCESS_TOKEN_HERE
+
+
+### 6. Logout - revoke toàn bộ token
+POST http://localhost:8080/api/auth/logout
+Authorization: Bearer PASTE_NEW_ACCESS_TOKEN_HERE
+
+
+### 7. Gọi lại API bằng token cũ sau logout
+GET http://localhost:8080/api/employees/me
+Authorization: Bearer PASTE_NEW_ACCESS_TOKEN_HERE
